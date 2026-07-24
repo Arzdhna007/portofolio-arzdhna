@@ -3,7 +3,6 @@ import './globals.css';
 export const metadata = {
   title: 'Arrizqi Pramadhana | Portofolio',
   description: 'AR & Multimedia Developer Portfolio Links',
-  // Properti 'icons' dihapus, Next.js akan otomatis membaca file app/icon.jpg
 };
 
 export default function RootLayout({
@@ -17,7 +16,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

@@ -139,3 +139,25 @@ body {
     color: var(--accent); box-shadow: 0 0 20px var(--accent-glow);
 }
 .theme-trigger-btn i { font-size: 1.2rem; }
+
+/* Visitor Tracker - Subtle UI */
+.visitor-tracker {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.3;
+    z-index: 100;
+    pointer-events: none;
+    font-family: monospace;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    transition: opacity 0.3s ease;
+}
+
+/* Sedikit terlihat saat di hover (opsional) */
+.visitor-tracker:hover {
+    opacity: 0.8;
+}

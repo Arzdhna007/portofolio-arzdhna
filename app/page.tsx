@@ -21,6 +21,10 @@ export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // State Analitik Pengunjung
+  const [visitorCount, setVisitorCount] = useState<string>('...');
+  const [visitorCountry, setVisitorCountry] = useState<string>('...');
+
   useEffect(() => {
     setIsReady(true);
     const savedThemeId = localStorage.getItem('portfolio-theme-id');
@@ -33,9 +37,21 @@ export default function Home() {
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
+
+    // Eksekusi Pelacakan Latar Belakang (Gratis via Public API)
+    // 1. Menambah & Mengambil Total Klik
+    fetch('https://api.counterapi.dev/v1/portofolio-arzdhna/visits/up')
+      .then(res => res.json())
+      .then(data => setVisitorCount(data.count.toString()))
+      .catch(() => setVisitorCount('Private'));
+
+    // 2. Mendeteksi Geolocation Pengunjung
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => setVisitorCountry(data.country_name))
+      .catch(() => setVisitorCountry('Unknown'));
   }, []);
 
-  // Mesin Rendering Partikel & Rasi Bintang
   useEffect(() => {
     if (!isReady) return;
     const canvas = canvasRef.current;
@@ -54,17 +70,16 @@ export default function Home() {
     let mouseX = width / 2;
     let mouseY = height / 2;
 
-    // Matriks Konfigurasi Fisika & Tema Pemrograman
     const physicsConfig: Record<string, any> = {
       fire: { chars: ['🔥', '✨', '💨'], dir: -1, grav: -0.1, count: 35, isNetwork: false },
       skull: { chars: ['💀', '🩸', '🦇'], dir: 1, grav: 0.15, count: 25, isNetwork: false },
       matrix: { chars: ['>_', '{}', '</>', '0', '1', '[]'], dir: 1, grav: 0.05, count: 60, isText: true, isNetwork: false },
-      cyberpunk: { chars: ['🐧', '🍎', '🐍', '🎮', '⚙️', '🗄️', '💻'], dir: 0, grav: 0, count: 25, isNetwork: false }, // Linux, iOS, Python, GameDev, Database
+      cyberpunk: { chars: ['🐧', '🍎', '🐍', '🎮', '⚙️', '🗄️', '💻'], dir: 0, grav: 0, count: 25, isNetwork: false },
       ocean: { chars: ['🫧', '🫧', '🐟'], dir: -1, grav: -0.05, count: 40, isNetwork: false },
       vaporwave: { chars: ['💾', '🌴', '🕹️'], dir: 1, grav: 0.1, count: 20, isNetwork: false },
-      aurora: { chars: ['✨', '⭐'], dir: 0, grav: 0, count: 50, isNetwork: true }, // Rasi bintang diaktifkan
+      aurora: { chars: ['✨', '⭐'], dir: 0, grav: 0, count: 50, isNetwork: true },
       gold: { chars: ['🪙', '✨', '💎'], dir: 1, grav: 0.15, count: 30, isNetwork: false },
-      dark: { chars: [], count: 50, isNetwork: true }, // Rasi bintang murni
+      dark: { chars: [], count: 50, isNetwork: true },
       light: { chars: ['☁️', '☀️'], dir: 0, grav: 0, count: 15, isNetwork: false }
     };
 
@@ -84,7 +99,7 @@ export default function Home() {
         if (activeConfig.isNetwork) {
           this.vx = (Math.random() - 0.5) * 1.5;
           this.vy = (Math.random() - 0.5) * 1.5;
-          this.size = 2; // Ukuran titik (node)
+          this.size = 2;
         } else if (activeConfig.isText) {
           this.vx = 0;
           this.vy = Math.random() * 2 + 1;
@@ -103,7 +118,6 @@ export default function Home() {
           if (this.baseX < 0 || this.baseX > width) this.vx *= -1;
           if (this.baseY < 0 || this.baseY > height) this.vy *= -1;
           
-          // Efek magnetik kursor
           const targetX = this.baseX + (mouseX - width / 2) * 0.05;
           const targetY = this.baseY + (mouseY - height / 2) * 0.05;
           this.x += (targetX - this.x) * 0.1;
@@ -144,10 +158,8 @@ export default function Home() {
 
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
-      
       particles.forEach(p => { p.update(); p.draw(); });
 
-      // Logika Penarikan Garis (Rasi Bintang / Network)
       if (activeConfig.isNetwork) {
         for (let i = 0; i < particles.length; i++) {
           for (let j = i; j < particles.length; j++) {
@@ -249,6 +261,11 @@ export default function Home() {
           </button>
         </div>
       </main>
+
+      {/* Teks Tracker Samaran */}
+      <div className="visitor-tracker">
+        total akses: {visitorCount} | pengguna: {visitorCountry.toLowerCase()}
+      </div>
     </>
   );
 }
