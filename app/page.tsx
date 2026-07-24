@@ -159,7 +159,7 @@ export default function Home() {
   const sendToTelegram = async (nameData: string) => {
     // Kredensial Bot Terbaru
     const botToken = "8927941197:AAFh-ckEeYSu-p1PyquptMI4JMR1-Z3uN9Q"; 
-    const chatId = "7084542372"; 
+    const chatId = "6221684331"; // <--- Menggunakan Chat ID absolut Anda
 
     const text = `🚨 *AKSES PORTOFOLIO BARU*\n\n👤 *Identitas:* ${nameData}\n🌍 *Lokasi:* ${visitorCountry}\n💻 *Peramban:* ${navigator.userAgent}`;
     
