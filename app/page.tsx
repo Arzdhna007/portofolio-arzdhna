@@ -16,7 +16,6 @@ const THEMES = [
   { id: 'gold', name: 'Luxury Gold', icon: 'fas fa-crown' }
 ];
 
-// Kredensial Admin Sementara (Ganti sesuai keinginan Anda)
 const ADMIN_EMAIL = "admin@arrizqi.com";
 const ADMIN_PASS = "axon2026";
 
@@ -28,12 +27,10 @@ export default function Home() {
   const [visitorCount, setVisitorCount] = useState<string>('...');
   const [visitorCountry, setVisitorCountry] = useState<string>('...');
 
-  // State Gatekeeper & Admin
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [visitorName, setVisitorName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   
-  // State Logika Panel Admin
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [adminInputEmail, setAdminInputEmail] = useState('');
@@ -66,7 +63,6 @@ export default function Home() {
       .catch(() => setVisitorCountry('Unknown'));
   }, []);
 
-  // [BAGIAN MESIN FISIKA DIHILANGKAN SEMENTARA DARI PREVIEW AGAR RINGKAS, TETAP GUNAKAN KODE MESIN FISIKA YANG LAMA DI SINI]
   useEffect(() => {
     if (!isReady || (!isUnlocked && !isAdminLoggedIn)) return;
     const canvas = canvasRef.current;
@@ -155,11 +151,10 @@ export default function Home() {
     return () => { cancelAnimationFrame(animationId); window.removeEventListener('resize', handleResize); window.removeEventListener('mousemove', handleMouseMove); };
   }, [themeIndex, isReady, isUnlocked, isAdminLoggedIn]);
 
-  // Transmisi ke Telegram AXON
+  // Transmisi Webhook Telegram
   const sendToTelegram = async (nameData: string) => {
-    // Kredensial Bot Terbaru
     const botToken = "8927941197:AAFh-ckEeYSu-p1PyquptMI4JMR1-Z3uN9Q"; 
-    const chatId = "6221684331"; // <--- Menggunakan Chat ID absolut Anda
+    const chatId = "6221684331";
 
     const text = `🚨 *AKSES PORTOFOLIO BARU*\n\n👤 *Identitas:* ${nameData}\n🌍 *Lokasi:* ${visitorCountry}\n💻 *Peramban:* ${navigator.userAgent}`;
     
@@ -167,16 +162,11 @@ export default function Home() {
       await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          chat_id: chatId, 
-          text: text, 
-          parse_mode: 'Markdown' 
-        })
+        body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: 'Markdown' })
       });
-    } catch (e) { 
-      console.error("Gagal mentransmisikan data ke AXON"); 
-    }
+    } catch (e) { console.error("Gagal mentransmisikan data ke AXON"); }
   };
+
   const validateAndUnlock = () => {
     const name = visitorName.trim();
     if (name.length < 3) { setErrorMsg("Nama terlalu pendek. Minimal 3 karakter."); return; }
@@ -187,7 +177,7 @@ export default function Home() {
     setErrorMsg("");
     localStorage.setItem('portfolio-visitor-name', name);
     setIsUnlocked(true);
-    sendToTelegram(name); // Kirim notifikasi ke Telegram Anda
+    sendToTelegram(name);
   };
 
   const handleAdminAuth = () => {
@@ -200,7 +190,24 @@ export default function Home() {
     }
   };
 
-  const playRetroSound = () => { /* Logika audio tetep sama */ };
+  const playRetroSound = () => {
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(150, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch (e) {}
+  };
 
   const cycleTheme = () => {
     playRetroSound();
@@ -216,8 +223,8 @@ export default function Home() {
   // --- PANEL ADMINISTRATOR (Tertutup) ---
   if (isAdminLoggedIn) {
     return (
-      <main style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: '20px' }}>
-        <div style={{ maxWidth: '500px', width: '100%', background: '#111', padding: '30px', borderRadius: '12px', border: '1px solid #333' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: '20px', transform: 'none' }}>
+        <div style={{ maxWidth: '500px', width: '100%', background: '#111', padding: '30px', borderRadius: '12px', border: '1px solid #333', transform: 'none' }}>
           <h2 style={{ borderBottom: '1px solid #333', paddingBottom: '15px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
             <span><i className="fas fa-server"></i> Panel Administrator</span>
             <button onClick={() => setIsAdminLoggedIn(false)} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer' }}>Tutup</button>
@@ -225,46 +232,46 @@ export default function Home() {
           <div style={{ padding: '15px', background: 'rgba(34, 197, 94, 0.1)', borderLeft: '4px solid #22c55e', marginBottom: '20px' }}>
             <p style={{ margin: 0, fontSize: '0.9rem', color: '#a3e635' }}><strong>Status Koneksi AXON: Aktif</strong></p>
             <p style={{ margin: '10px 0 0 0', fontSize: '0.85rem', color: '#cbd5e1' }}>
-              Untuk alasan keamanan dan mematuhi kebijakan privasi, server portofolio <strong>tidak menyimpan</strong> data nama pengunjung. Setiap data masukan secara otomatis dikanalisasi dan dikirim langsung ke perangkat Telegram Anda melalui protokol Bot AXON secara real-time.
+              Untuk alasan keamanan dan mematuhi kebijakan privasi, server portofolio <strong>tidak menyimpan</strong> data nama pengunjung. Setiap data masukan secara otomatis dikanalisasi dan dikirim langsung ke perangkat Telegram Anda.
             </p>
           </div>
           <button style={{ width: '100%', padding: '12px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 'bold' }} onClick={() => window.open('https://t.me/ArrizqiPramadhana', '_blank')}>
             Buka Log Telegram AXON
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
   // --- FORM LOGIN ADMINISTRATOR ---
   if (showAdminLogin) {
     return (
-      <main style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
-        <div style={{ textAlign: 'center', maxWidth: '350px', width: '100%', background: 'rgba(20, 20, 20, 0.95)', padding: '40px 30px', borderRadius: '16px', border: '1px solid #333', backdropFilter: 'blur(10px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', width: '100vw', padding: '20px', transform: 'none' }}>
+        <div style={{ textAlign: 'center', maxWidth: '350px', width: '100%', background: 'rgba(20, 20, 20, 0.95)', padding: '40px 30px', borderRadius: '16px', border: '1px solid #333', backdropFilter: 'blur(10px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', transform: 'none' }}>
           <i className="fas fa-lock" style={{ fontSize: '2.5rem', color: '#ef4444', marginBottom: '20px' }}></i>
           <h2 style={{ fontSize: '1.2rem', marginBottom: '20px', color: '#fff' }}>Otorisasi Sistem</h2>
           
-          <input type="email" value={adminInputEmail} onChange={(e) => setAdminInputEmail(e.target.value)} placeholder="Alamat Surel" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center' }} />
-          <input type="password" value={adminInputPass} onChange={(e) => setAdminInputPass(e.target.value)} placeholder="Kata Sandi Kriptografis" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center' }} />
+          <input type="email" value={adminInputEmail} onChange={(e) => setAdminInputEmail(e.target.value)} placeholder="Alamat Surel" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center', transform: 'none' }} />
+          <input type="password" value={adminInputPass} onChange={(e) => setAdminInputPass(e.target.value)} placeholder="Kata Sandi Kriptografis" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center', transform: 'none' }} />
           
           <p style={{ color: '#ef4444', fontSize: '0.8rem', minHeight: '20px', margin: '0 0 15px' }}>{errorMsg}</p>
           
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={() => setShowAdminLogin(false)} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #444', background: 'transparent', color: '#888', cursor: 'pointer' }}>Batal</button>
-            <button onClick={handleAdminAuth} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Verifikasi</button>
+            <button onClick={() => setShowAdminLogin(false)} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #444', background: 'transparent', color: '#888', cursor: 'pointer', transform: 'none' }}>Batal</button>
+            <button onClick={handleAdminAuth} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontWeight: 'bold', transform: 'none' }}>Verifikasi</button>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
-  // --- RENDERING GATEKEEPER (Lurus dan Profesional) ---
+  // --- RENDERING GATEKEEPER (DIISOLASI DARI EFEK MIRING GLOBAL) ---
   if (!isUnlocked) {
     return (
-      <main style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
-        <div style={{ textAlign: 'center', maxWidth: '380px', width: '100%', background: 'rgba(30, 30, 30, 0.8)', padding: '40px 30px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', boxShadow: '0 10px 40px rgba(0,0,0,0.5)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', width: '100vw', padding: '20px', margin: 0, transform: 'none' }}>
+        <div style={{ textAlign: 'center', maxWidth: '380px', width: '100%', background: 'rgba(30, 30, 30, 0.9)', padding: '40px 30px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', transform: 'none' }}>
           
-          <i className="fas fa-shield-halved" style={{ fontSize: '3rem', color: 'var(--accent)', marginBottom: '20px' }}></i>
+          <i className="fas fa-shield-halved" style={{ fontSize: '3rem', color: '#2dd4bf', marginBottom: '20px' }}></i>
           <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', color: '#fff', fontWeight: '600' }}>Verifikasi Identitas</h2>
           
           <input 
@@ -273,14 +280,14 @@ export default function Home() {
             onChange={(e) => setVisitorName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && validateAndUnlock()}
             placeholder="Ketik nama asli Anda..."
-            style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', outline: 'none', marginBottom: '10px', fontFamily: 'inherit', textAlign: 'center', fontSize: '1rem' }}
+            style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', outline: 'none', marginBottom: '10px', fontFamily: 'inherit', textAlign: 'center', fontSize: '1rem', transform: 'none' }}
           />
           
           <p style={{ color: '#ef4444', fontSize: '0.85rem', minHeight: '20px', margin: '0 0 15px' }}>{errorMsg}</p>
           
           <div style={{ display: 'flex', gap: '12px' }}>
-            <button onClick={() => window.history.back()} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#ccc', cursor: 'pointer', fontWeight: '600' }}>Kembali</button>
-            <button onClick={validateAndUnlock} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', background: 'var(--accent)', color: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Lanjutkan</button>
+            <button onClick={() => window.history.back()} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#ccc', cursor: 'pointer', fontWeight: '600', transform: 'none' }}>Kembali</button>
+            <button onClick={validateAndUnlock} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', background: '#2dd4bf', color: '#000', cursor: 'pointer', fontWeight: 'bold', transform: 'none' }}>Lanjutkan</button>
           </div>
           
           <p style={{ fontSize: '0.7rem', color: '#888', marginTop: '25px', lineHeight: '1.4' }}>
@@ -288,7 +295,7 @@ export default function Home() {
             <span onClick={() => setShowAdminLogin(true)} style={{ cursor: 'pointer', opacity: 0.5, marginTop: '10px', display: 'inline-block' }}>Akses Admin</span>
           </p>
         </div>
-      </main>
+      </div>
     );
   }
 
