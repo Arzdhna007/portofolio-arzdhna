@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "name": "Arrizqi Pramadhana S.Tr.Kom",
+    "role": "Web Developer | AI Engineer | Creative Tech Specialist",
+    "avatar": "/data/Foto.jpeg"
+  },
+  "links": [
+    { "title": "Portofolio (Web/Canva)", "url": "https://canva.link/portofolio-arrizqipramadhana2026", "icon": "fas fa-palette" },
+    { "title": "Portofolio (PDF)", "url": "/data/Portfolio Creative Arrizqi Pramadhana UPDATED 2026_compressed.pdf", "icon": "fas fa-file-pdf" },
+    { "title": "Curriculum Vitae", "url": "/data/CV_Arrizqi_Pramadhana 2026_01.pdf", "icon": "fas fa-user-tie" },
+    { "title": "LinkedIn", "url": "https://www.linkedin.com/in/arrizqi-pramadhana", "icon": "fab fa-linkedin" },
+    { "title": "GitHub", "url": "https://github.com/Arzdhna007", "icon": "fab fa-github" },
+    { "title": "Instagram", "url": "https://instagram.com/arzdhna", "icon": "fab fa-instagram" },
+    { "title": "TikTok", "url": "https://www.tiktok.com/@arz.dhna_", "icon": "fab fa-tiktok" }
+  ]
+}

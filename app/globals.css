@@ -1,0 +1,141 @@
+:root {
+    /* 1. DARK (Default) */
+    --bg-main: #09090b; --card-bg: rgba(24, 24, 27, 0.65);
+    --text-main: #f8fafc; --text-muted: #94a3b8;
+    --accent: #0ea5e9; --accent-glow: rgba(14, 165, 233, 0.4);
+    --border: rgba(255, 255, 255, 0.1); --btn-border: rgba(255, 255, 255, 0.05);
+    --bg-anim: none;
+}
+
+[data-theme='light'] {
+    /* 2. LIGHT */
+    --bg-main: #f1f5f9; --card-bg: rgba(255, 255, 255, 0.8);
+    --text-main: #0f172a; --text-muted: #475569;
+    --accent: #0284c7; --accent-glow: rgba(2, 132, 199, 0.3);
+    --border: rgba(0, 0, 0, 0.15); --btn-border: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='fire'] {
+    /* 3. FIRE (Api) */
+    --bg-main: #2a0800; --card-bg: rgba(20, 0, 0, 0.8);
+    --text-main: #fff; --text-muted: #fca5a5;
+    --accent: #ef4444; --accent-glow: rgba(239, 68, 68, 0.6);
+    --border: rgba(239, 68, 68, 0.3); --btn-border: rgba(239, 68, 68, 0.1);
+    --bg-anim: fireGlow 3s infinite alternate;
+}
+
+[data-theme='skull'] {
+    /* 4. SKULL (Gothic/Dark Blood) */
+    --bg-main: #000000; --card-bg: rgba(15, 0, 0, 0.9);
+    --text-main: #e2e8f0; --text-muted: #7f1d1d;
+    --accent: #b91c1c; --accent-glow: rgba(185, 28, 28, 0.8);
+    --border: rgba(185, 28, 28, 0.4); --btn-border: rgba(185, 28, 28, 0.15);
+}
+
+[data-theme='matrix'] {
+    /* 5. MATRIX (Hacker) */
+    --bg-main: #000000; --card-bg: rgba(0, 15, 0, 0.8);
+    --text-main: #22c55e; --text-muted: #166534;
+    --accent: #4ade80; --accent-glow: rgba(74, 222, 128, 0.5);
+    --border: rgba(34, 197, 94, 0.4); --btn-border: rgba(34, 197, 94, 0.1);
+}
+
+[data-theme='cyberpunk'] {
+    /* 6. CYBERPUNK (Yellow/Cyan) */
+    --bg-main: #fef08a; --card-bg: rgba(0, 0, 0, 0.85);
+    --text-main: #06b6d4; --text-muted: #d946ef;
+    --accent: #f43f5e; --accent-glow: rgba(244, 63, 94, 0.6);
+    --border: #06b6d4; --btn-border: rgba(6, 182, 212, 0.2);
+}
+
+[data-theme='ocean'] {
+    /* 7. OCEAN (Deep Sea) */
+    --bg-main: #082f49; --card-bg: rgba(8, 47, 73, 0.6);
+    --text-main: #e0f2fe; --text-muted: #7dd3fc;
+    --accent: #38bdf8; --accent-glow: rgba(56, 189, 248, 0.5);
+    --border: rgba(56, 189, 248, 0.3); --btn-border: rgba(56, 189, 248, 0.1);
+}
+
+[data-theme='vaporwave'] {
+    /* 8. VAPORWAVE (Retro 80s) */
+    --bg-main: #2e1065; --card-bg: rgba(46, 16, 101, 0.7);
+    --text-main: #fdf4ff; --text-muted: #f0abfc;
+    --accent: #c026d3; --accent-glow: rgba(192, 38, 211, 0.6);
+    --border: rgba(217, 70, 239, 0.4); --btn-border: rgba(217, 70, 239, 0.15);
+}
+
+[data-theme='aurora'] {
+    /* 9. AURORA (Northern Lights) */
+    --bg-main: #022c22; --card-bg: rgba(2, 44, 34, 0.7);
+    --text-main: #ccfbf1; --text-muted: #5eead4;
+    --accent: #2dd4bf; --accent-glow: rgba(45, 212, 191, 0.6);
+    --border: rgba(45, 212, 191, 0.3); --btn-border: rgba(45, 212, 191, 0.1);
+    --bg-anim: auroraGlow 4s infinite alternate;
+}
+
+[data-theme='gold'] {
+    /* 10. GOLD LUXURY */
+    --bg-main: #171717; --card-bg: rgba(23, 23, 23, 0.8);
+    --text-main: #fef3c7; --text-muted: #d97706;
+    --accent: #fbbf24; --accent-glow: rgba(251, 191, 36, 0.5);
+    --border: rgba(251, 191, 36, 0.4); --btn-border: rgba(251, 191, 36, 0.1);
+}
+
+@keyframes fireGlow { 0% { background-color: #2a0800; } 100% { background-color: #450a0a; } }
+@keyframes auroraGlow { 0% { background-color: #022c22; } 100% { background-color: #064e3b; } }
+
+body {
+    margin: 0; padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; overflow-x: hidden;
+    animation: var(--bg-anim);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.tilt-wrapper { width: 100%; max-width: 420px; z-index: 10; margin: auto; }
+
+.container {
+    background: var(--card-bg); padding: 40px 25px;
+    border-radius: 20px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+}
+
+.profile { text-align: center; margin-bottom: 30px; }
+.profile img {
+    width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 3px solid var(--border); padding: 4px; transition: 0.4s;
+}
+.profile img:hover { border-color: var(--accent); box-shadow: 0 0 25px var(--accent-glow); transform: scale(1.05); }
+.profile h1 { margin: 10px 0 5px; font-size: 1.4rem; font-weight: 700; transition: color 0.5s; }
+.profile p { margin: 0; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; transition: color 0.5s; }
+
+.links { display: flex; flex-direction: column; gap: 14px; }
+.link-btn {
+    position: relative; display: flex; align-items: center; padding: 16px 20px;
+    background: var(--btn-border); color: var(--text-main); text-decoration: none;
+    border-radius: 14px; border: 1px solid var(--border);
+    font-weight: 600; overflow: hidden; transition: 0.3s;
+}
+.link-btn i { font-size: 1.2rem; width: 35px; color: var(--text-muted); transition: 0.3s; z-index: 2; }
+.link-btn span { flex: 1; text-align: center; transform: translateX(-17px); z-index: 2; transition: color 0.5s; }
+
+.link-btn:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+.link-btn:hover i { color: var(--accent); transform: scale(1.2); }
+
+/* Tombol Switcher Utama */
+.theme-trigger-btn {
+    width: 100%; margin-top: 30px; padding: 16px; border-radius: 14px;
+    background: transparent; color: var(--text-main);
+    border: 2px dashed var(--border); cursor: pointer; font-weight: 700; font-size: 0.95rem;
+    transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+.theme-trigger-btn:hover {
+    background: var(--btn-border); border-style: solid; border-color: var(--accent);
+    color: var(--accent); box-shadow: 0 0 20px var(--accent-glow);
+}
+.theme-trigger-btn i { font-size: 1.2rem; }
