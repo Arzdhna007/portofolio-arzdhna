@@ -243,28 +243,6 @@ export default function Home() {
     );
   }
 
-  // --- FORM LOGIN ADMINISTRATOR ---
-  if (showAdminLogin) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', width: '100vw', padding: '20px', transform: 'none' }}>
-        <div style={{ textAlign: 'center', maxWidth: '350px', width: '100%', background: 'rgba(20, 20, 20, 0.95)', padding: '40px 30px', borderRadius: '16px', border: '1px solid #333', backdropFilter: 'blur(10px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', transform: 'none' }}>
-          <i className="fas fa-lock" style={{ fontSize: '2.5rem', color: '#ef4444', marginBottom: '20px' }}></i>
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '20px', color: '#fff' }}>Otorisasi Sistem</h2>
-          
-          <input type="email" value={adminInputEmail} onChange={(e) => setAdminInputEmail(e.target.value)} placeholder="Alamat Surel" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center', transform: 'none' }} />
-          <input type="password" value={adminInputPass} onChange={(e) => setAdminInputPass(e.target.value)} placeholder="Kata Sandi Kriptografis" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #444', background: '#000', color: '#fff', outline: 'none', marginBottom: '10px', textAlign: 'center', transform: 'none' }} />
-          
-          <p style={{ color: '#ef4444', fontSize: '0.8rem', minHeight: '20px', margin: '0 0 15px' }}>{errorMsg}</p>
-          
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={() => setShowAdminLogin(false)} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #444', background: 'transparent', color: '#888', cursor: 'pointer', transform: 'none' }}>Batal</button>
-            <button onClick={handleAdminAuth} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontWeight: 'bold', transform: 'none' }}>Verifikasi</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // --- RENDERING GATEKEEPER (DIISOLASI DARI EFEK MIRING GLOBAL) ---
   if (!isUnlocked) {
     return (
@@ -274,13 +252,30 @@ export default function Home() {
           <i className="fas fa-shield-halved" style={{ fontSize: '3rem', color: '#2dd4bf', marginBottom: '20px' }}></i>
           <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', color: '#fff', fontWeight: '600' }}>Verifikasi Identitas</h2>
           
-          <input 
+        <input 
             type="text" 
             value={visitorName}
             onChange={(e) => setVisitorName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && validateAndUnlock()}
             placeholder="Ketik nama asli Anda..."
-            style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', outline: 'none', marginBottom: '10px', fontFamily: 'inherit', textAlign: 'center', fontSize: '1rem', transform: 'none' }}
+            style={{ 
+              width: '100%', 
+              padding: '12px', 
+              borderRadius: '10px', 
+              border: '1px solid rgba(255,255,255,0.2)', 
+              background: 'rgba(0,0,0,0.4)', 
+              color: '#fff', 
+              outline: 'none', 
+              marginBottom: '10px', 
+              fontFamily: 'inherit', 
+              textAlign: 'center', 
+              fontSize: '1rem', 
+              
+              /* -- KONTROL MANUAL ABSOLUT -- */
+              position: 'relative',
+              left: '-13px',               /* GESER POSISI: Ubah ke '10px' untuk geser kanan, '-10px' untuk geser kiri */
+              transform: 'rotate(0deg)'  /* KOREKSI ROTASI: Ubah ke '2deg' atau '-2deg' jika bentuk kotaknya yang miring/berputar */
+            }}
           />
           
           <p style={{ color: '#ef4444', fontSize: '0.85rem', minHeight: '20px', margin: '0 0 15px' }}>{errorMsg}</p>
@@ -292,8 +287,7 @@ export default function Home() {
           
           <p style={{ fontSize: '0.7rem', color: '#888', marginTop: '25px', lineHeight: '1.4' }}>
             *Input divalidasi untuk keamanan sistem. Nama Anda tidak dibagikan ke pihak ketiga.<br/>
-            <span onClick={() => setShowAdminLogin(true)} style={{ cursor: 'pointer', opacity: 0.5, marginTop: '10px', display: 'inline-block' }}>Akses Admin</span>
-          </p>
+           </p>
         </div>
       </div>
     );
