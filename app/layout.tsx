@@ -3,6 +3,7 @@ import './globals.css';
 export const metadata = {
   title: 'Arrizqi Pramadhana | Portofolio',
   description: 'AR & Multimedia Developer Portfolio Links',
+  // Properti 'icons' dihapus, Next.js akan otomatis membaca file app/icon.jpg
 };
 
 export default function RootLayout({
